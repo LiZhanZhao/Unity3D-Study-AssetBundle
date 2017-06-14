@@ -36,13 +36,11 @@ public class LoadAB : MonoBehaviour {
         var prefab = myLoadedAssetBundle.LoadAsset<Object>(prefabAssetPath);
         Instantiate(prefab);
 
-        // unload  
+        // 如果不调用unLoad的话，内存的Other/SerializeFile 会增加
         for (int i = 0; i < dependBundleList.Count; i++)
         {
             dependBundleList[i].Unload(false);
-            //dependBundleList[i].Unload(true);
         }
         myLoadedAssetBundle.Unload(false);
-        //myLoadedAssetBundle.Unload(true);
     }
 }
