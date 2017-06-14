@@ -3,7 +3,7 @@
 // - no lightmap support
 // - no per-material color
 
-Shader "Qtz/Unity/Unlit/Unlit-Texture" {
+Shader "Unity/Unlit/Unlit-Texture" {
 Properties {
 	_MainTex ("Base (RGB)", 2D) = "white" {}
 	_MainColor ("Color", Color) = (1, 1, 1, 1)
