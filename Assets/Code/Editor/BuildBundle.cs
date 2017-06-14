@@ -32,18 +32,24 @@ public class BuildBundle
         buildMap[2].assetBundleName = "333";
         */
 
+        
         // scene
         string[] assetNames = new string[1];
         assetNames[0] = "Assets/res/Scenes/1001/1001.unity";
         buildMap[0].assetNames = assetNames;
         buildMap[0].assetBundleName = "111";
 
+        assetNames = new string[1];
+        assetNames[0] = "Assets/res/Models/scene/1001/FBX/sky.FBX";
+        buildMap[1].assetNames = assetNames;
+        buildMap[1].assetBundleName = "sky";
+        
+
         string outputPath = Application.streamingAssetsPath + "/ABs";
-        if (System.IO.Directory.Exists(outputPath))
+        if (!System.IO.Directory.Exists(outputPath))
         {
-            System.IO.Directory.Delete(outputPath,true);
-        }    
-        System.IO.Directory.CreateDirectory(outputPath);
+            System.IO.Directory.CreateDirectory(outputPath);
+        }
         
 
         BuildAssetBundleOptions op = BuildAssetBundleOptions.ChunkBasedCompression; // LZ4  
