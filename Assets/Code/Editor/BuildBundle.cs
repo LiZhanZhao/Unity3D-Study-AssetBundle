@@ -37,12 +37,12 @@ public class BuildBundle
         string[] assetNames = new string[1];
         assetNames[0] = "Assets/res/Scenes/1001/1001.unity";
         buildMap[0].assetNames = assetNames;
-        buildMap[0].assetBundleName = "111";
+        buildMap[0].assetBundleName = "1001_Scene";
 
         assetNames = new string[1];
-        assetNames[0] = "Assets/res/Models/scene/1001/FBX/sky.FBX";
+        assetNames[0] = "Assets/res/Scenes/1001_Test/SceneRoot.prefab";
         buildMap[1].assetNames = assetNames;
-        buildMap[1].assetBundleName = "sky";
+        buildMap[1].assetBundleName = "SceneRoot";
         
 
         string outputPath = Application.streamingAssetsPath + "/ABs";
