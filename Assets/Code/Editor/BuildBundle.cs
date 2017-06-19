@@ -54,7 +54,11 @@ public class BuildBundle
 
         BuildAssetBundleOptions op = BuildAssetBundleOptions.ChunkBasedCompression; // LZ4  
 
-        BuildPipeline.BuildAssetBundles(outputPath, buildMap,op, BuildTarget.StandaloneWindows);
+        //打Pc assetBundle
+        //BuildPipeline.BuildAssetBundles(outputPath, buildMap,op, BuildTarget.StandaloneWindows);
+
+        // 打android assetBundle
+        BuildPipeline.BuildAssetBundles(outputPath, buildMap, op, BuildTarget.Android);
         AssetDatabase.Refresh();
     }
 }

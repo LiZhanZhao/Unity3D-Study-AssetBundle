@@ -86,7 +86,7 @@ public class LoadSceneAB : MonoBehaviour {
         yield return www;
         if (www.error != null)
         {
-            Debug.LogError("下载失败");
+            Debug.LogError(string.Format("下载 {0} 失败", srcUrl));
         }
         else
         {
@@ -103,7 +103,7 @@ public class LoadSceneAB : MonoBehaviour {
     void WriteFile(string path, byte[] content)
     {
         string dirPath = System.IO.Path.GetDirectoryName(path);
-        Debug.Log(dirPath);
+        Debug.Log("-------- " + dirPath);
         if (!System.IO.Directory.Exists(dirPath)) System.IO.Directory.CreateDirectory(dirPath);
         System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create);
         fs.Write(content, 0, content.Length);
@@ -135,8 +135,28 @@ public class LoadSceneAB : MonoBehaviour {
         {
             kStreamABDir = "file://" + Application.streamingAssetsPath + "/ABs/";
         }
+        
+        else if(Application.platform == RuntimePlatform.Android){
 
-        kPersistentABDir = Application.persistentDataPath + "/ABs/";
+            //Note that on some platforms it is not possible to directly access the StreamingAssets folder 
+            //because there is no file system access in the web platforms, 
+            //and because it is compressed into the .apk file on Android. 
+            //On those platforms, a url will be returned, which can be used using the WWW class.
+
+            kStreamABDir = "jar:file://" + Application.dataPath + "!/assets" + "/ABs/";
+        }
+
+
+        if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+        {
+            kPersistentABDir = Application.persistentDataPath + "/ABs/";
+        }
+        else if(Application.platform == RuntimePlatform.Android)
+        {
+            kPersistentABDir = Application.persistentDataPath + "/ABs/";
+        }
+
+            
         ProcessDownload();
     }
 
@@ -151,4 +171,27 @@ public class LoadSceneAB : MonoBehaviour {
         }
         
     }
+
+
+    /*
+    private static string GetAssetsPath(string relaPath = "")
+    {
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            return Application.dataPath + "/Raw/" + relaPath;
+        }
+        else if (Application.platform == RuntimePlatform.Android)
+        {
+            return "jar:file://" + Application.dataPath + "!/assets/" + relaPath;
+        }
+        else if (Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            return Application.dataPath + "/StreamingAssets/" + relaPath;
+        }
+        else
+        {
+            return Application.dataPath + "/" + relaPath;
+        }
+    }
+     */
 }
