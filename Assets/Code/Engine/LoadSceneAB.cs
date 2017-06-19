@@ -6,17 +6,20 @@ public class LoadSceneAB : MonoBehaviour {
 
     AssetBundle _rootBundle;
     AssetBundleManifest _manifest;
-    string kABDir = "";
+    string kStreamABDir;
+    string kPersistentABDir;
     List<AssetBundle> _bundleList = new List<AssetBundle>();
+    bool _isInitManifest = false;
 
-    void Start()
+    void InitManifest()
     {
-        kABDir = Application.streamingAssetsPath + "/ABs/";
-        string mainManifestPath = kABDir + "ABs";
+        string mainManifestPath = kPersistentABDir + "ABs";
         _rootBundle = AssetBundle.LoadFromFile(mainManifestPath);
         _manifest = _rootBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
 
         GameObject.DontDestroyOnLoad(gameObject);
+
+        _isInitManifest = true;
     }
 
     private void OnDestroy()
@@ -27,7 +30,6 @@ public class LoadSceneAB : MonoBehaviour {
     // 直接读取streamingAssets目录
     void ChangeScene()
     {
-        //LoadScene("1001_Test", "1001_Test_Scene");
         LoadScene("1001", "1001_Scene");
     }
 
@@ -38,12 +40,12 @@ public class LoadSceneAB : MonoBehaviour {
         for (int i = 0; i < dependPath.Length; i++)
         {
             Debug.Log(dependPath[i]);
-            var dependBundle = AssetBundle.LoadFromFile(kABDir + dependPath[i]);
+            var dependBundle = AssetBundle.LoadFromFile(kPersistentABDir + dependPath[i]);
             dependBundleList.Add(dependBundle);
         }
         
 
-        var sceneBundle = AssetBundle.LoadFromFile(kABDir + sceneBundleName);
+        var sceneBundle = AssetBundle.LoadFromFile(kPersistentABDir + sceneBundleName);
         if (sceneBundle == null)
         {
             Debug.Log("Failed to load AssetBundle!");
@@ -74,45 +76,79 @@ public class LoadSceneAB : MonoBehaviour {
     private void OnLevelWasLoaded(int level)
     {
         Debug.Log("xxxxxx " + level);
-        UnLoadSceneBundle();
+        //UnLoadSceneBundle();
     }
 
-    //void ChangeScene2()
-    //{
-    //    StartCoroutine(Download());
-    //}
+    
+    IEnumerator DoDownload(string srcUrl, string dstUrl, int index, int maxIndex)
+    {
+        WWW www = new WWW(srcUrl);
+        yield return www;
+        if (www.error != null)
+        {
+            Debug.LogError("下载失败");
+        }
+        else
+        {
+            WriteFile(dstUrl, www.bytes);
 
+            if(index == (maxIndex - 1))
+            {
+                InitManifest();
+            }
+        }
+        www.Dispose();
+    }
 
-    //IEnumerator Download()
-    //{
-    //    string url = "file://" + Application.streamingAssetsPath + "/Scene.unity3d";
+    void WriteFile(string path, byte[] content)
+    {
+        string dirPath = System.IO.Path.GetDirectoryName(path);
+        Debug.Log(dirPath);
+        if (!System.IO.Directory.Exists(dirPath)) System.IO.Directory.CreateDirectory(dirPath);
+        System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create);
+        fs.Write(content, 0, content.Length);
+        fs.Close();
+    }
 
-    //    WWW www = new WWW(url);
-    //    yield return www;
-    //    if (www.error != null)
-    //    {
-    //        Debug.Log("下载失败");
-    //    }
-    //    else
-    //    {
-    //        AssetBundle bundle = www.assetBundle;
-    //        Application.LoadLevel("1001");
-    //        print("跳转场景");
-    //        // AssetBundle.Unload(false)，释放AssetBundle文件内存镜像，不销毁Load创建的Assets对象
-    //        // AssetBundle.Unload(true)，释放AssetBundle文件内存镜像同时销毁所有已经Load的Assets内存镜像
-    //        // 这里会报错
-    //        //bundle.Unload(false);
-    //    }
+    void ProcessDownload()
+    {
+        string[] srcUrlList = new string[]
+        {
+            "1001_scene",
+            "1001_scene.manifest",
+            "ABs",
+            "ABs.manifest",
+        };
 
-    //    // 中断正在加载过程中的WWW
-    //    www.Dispose();
-    //}
+        for (int i = 0; i < srcUrlList.Length; i++)
+        {
+            string srcPath = kStreamABDir + srcUrlList[i];
+            string dstPath = kPersistentABDir + srcUrlList[i];
+            StartCoroutine(DoDownload(srcPath, dstPath, i, srcUrlList.Length));
+        }
+
+    }
+
+    void Start()
+    {
+        if(Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+        {
+            kStreamABDir = "file://" + Application.streamingAssetsPath + "/ABs/";
+        }
+
+        kPersistentABDir = Application.persistentDataPath + "/ABs/";
+        ProcessDownload();
+    }
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(0, 0, 100, 100), "Next"))
+        if (_isInitManifest)
         {
-            ChangeScene();
+            if (GUI.Button(new Rect(0, 0, 100, 100), "Next"))
+            {
+                ChangeScene();
+            }
         }
+        
     }
 }
