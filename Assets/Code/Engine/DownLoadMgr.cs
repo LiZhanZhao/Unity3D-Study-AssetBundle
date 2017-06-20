@@ -85,11 +85,12 @@ public class DownLoadMgr : MonoBehaviour {
 
     void WriteFile(string path, byte[] content)
     {
-        Debug.Log("-------- " + path);
+        
         string dirPath = System.IO.Path.GetDirectoryName(path);
         if (!System.IO.Directory.Exists(dirPath)) System.IO.Directory.CreateDirectory(dirPath);
         System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create);
         fs.Write(content, 0, content.Length);
+        Debug.Log("成功下载 : " + path);
         fs.Close();
     }
 
@@ -106,7 +107,8 @@ public class DownLoadMgr : MonoBehaviour {
             if (GUI.Button(new Rect(0, 0, 100, 100), "Next"))
             {
                 LoadSceneMgr loadSceneMgr = GameObject.FindObjectOfType<LoadSceneMgr>();
-                loadSceneMgr.LoadScene("1001", "1001_Scene");
+                //loadSceneMgr.LoadScene("1001", "1001_Scene");
+                loadSceneMgr.LoadSceneAsync("1001", "1001_Scene");
 
                 //UnityEngine.SceneManagement.SceneManager.LoadScene("empty");
             }

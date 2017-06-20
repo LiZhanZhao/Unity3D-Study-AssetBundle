@@ -8,7 +8,7 @@ public class LoadSceneMgr : MonoBehaviour {
     AssetBundleManifest _manifest;
     //List<AssetBundle> _sceneBundleList = new List<AssetBundle>();
     Dictionary<string, AssetBundle> _bundleCache = new Dictionary<string, AssetBundle>();
-
+    Dictionary<string, bool> _lockBundles = new Dictionary<string, bool>();
     // Use this for initialization
     void Start () {
         DontDestroyOnLoad(gameObject);
@@ -26,7 +26,7 @@ public class LoadSceneMgr : MonoBehaviour {
 
     public void LoadScene(string sceneName, string sceneBundleName)
     {
-        var sceneBundle = LoadBundle(sceneBundleName);
+        LoadBundle(sceneBundleName);
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
 
         // 场景的话，这里的bundle不能unload,unload就有问题了
@@ -37,53 +37,117 @@ public class LoadSceneMgr : MonoBehaviour {
         //sceneBundle.Unload(false);
     }
 
-    //public void LoadSceneAsync(string sceneName, string sceneBundleName)
-    //{
-    //    List<AssetBundle> dependBundleList = new List<AssetBundle>();
-    //    string[] dependPath = _manifest.GetAllDependencies(sceneBundleName);
-    //    for (int i = 0; i < dependPath.Length; i++)
-    //    {
-    //        Debug.Log(dependPath[i]);
-    //        StartCoroutine(LoadBundleAsync(Const.kPersistentABDir + dependPath[i]));
-    //    }
-    //}
+    
 
-    AssetBundle LoadBundle(string bundleName)
+    void LoadBundle(string bundleName)
     {
-        if (_bundleCache.ContainsKey(bundleName))
+        if (!_bundleCache.ContainsKey(bundleName))
         {
-            return _bundleCache[bundleName];
-        }
+            string[] dependBundleNames = _manifest.GetAllDependencies(bundleName);
+            for (int i = 0; i < dependBundleNames.Length; i++)
+            {
+                string dependBundleName = dependBundleNames[i];
+                LoadBundle(dependBundleName);
+            }
 
-        string[] dependBundleNames = _manifest.GetAllDependencies(bundleName);
-        for (int i = 0; i < dependBundleNames.Length; i++)
-        {
-            string dependBundleName = dependBundleNames[i];
-            Debug.Log(dependBundleName);
-            var dependBundle = LoadBundle(dependBundleName);
+            string bundlePath = Const.kPersistentABDir + bundleName;
+            var bundle = AssetBundle.LoadFromFile(bundlePath);
+            Debug.Assert(bundle != null, string.Format("加载 {0} bundle 失败", bundlePath));
+            Debug.Log(string.Format("{0} 同步 加载成功", bundleName));
+            _bundleCache.Add(bundleName, bundle);
         }
-
-        string bundlePath = Const.kPersistentABDir + bundleName;
-        var bundle = AssetBundle.LoadFromFile(bundlePath);
-        Debug.Assert(bundle != null, string.Format("加载 {0} bundle 失败", bundlePath));
-        _bundleCache.Add(bundleName, bundle);
-        return bundle;
     }
 
+    public void LoadSceneAsync(string sceneName, string sceneBundleName)
+    {
+        StartCoroutine(DoLoadBundleAsync(sceneBundleName));
+        StartCoroutine(DoLoadSceneAsync(sceneName, sceneBundleName));
+    }
 
-    //IEnumerator LoadBundleAsync(string path)
-    //{
-    //    AssetBundleCreateRequest bundleRequest = AssetBundle.LoadFromFileAsync(path);
-    //    yield return bundleRequest;
-    //    var bundle = bundleRequest.assetBundle;
-    //    if (bundle == null)
-    //    {
-    //        Debug.LogError(string.Format("Failed to load {0} AssetBundle!", path));
-    //        yield break;
-    //    }
+    IEnumerator DoLoadSceneAsync(string sceneName, string sceneBundleName)
+    {
+        while (!_bundleCache.ContainsKey(sceneBundleName))
+        {
+            yield return null;
+        }
 
-        
-    //}
+        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+        //UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Additive);
+    }
+
+    void LockBundle(string bundleName)
+    {
+        if (!_lockBundles.ContainsKey(bundleName))
+        {
+            _lockBundles.Add(bundleName, true);
+        }
+    }
+
+    void UnLockBundle(string bundleName)
+    {
+        if (_lockBundles.ContainsKey(bundleName))
+        {
+            _lockBundles.Remove(bundleName);
+        }
+    }
+
+    bool IsLockBundle(string bundleName)
+    {
+        return _lockBundles.ContainsKey(bundleName);
+    }
+
+    bool IsFinishLoadDependBundle(string[] dependBundleNames)
+    {
+        bool isFinish = true;
+        for(int i = 0; i < dependBundleNames.Length; i++)
+        {
+            if (!_bundleCache.ContainsKey(dependBundleNames[i]))
+            {
+                isFinish = false;
+            }
+        }
+        return isFinish;
+    }
+
+    IEnumerator DoLoadBundleAsync(string bundleName)
+    { 
+        if (!_bundleCache.ContainsKey(bundleName) || !IsLockBundle(bundleName))
+        {
+            // 锁住了某一个Bundle
+            LockBundle(bundleName);
+
+            string[] dependBundleNames = _manifest.GetAllDependencies(bundleName);
+            for (int i = 0; i < dependBundleNames.Length; i++)
+            {
+                string dependBundleName = dependBundleNames[i];
+                StartCoroutine(DoLoadBundleAsync(dependBundleName));
+            }
+
+            // 如果依赖Bundle的还没有好的话，就进行等待
+            while (!IsFinishLoadDependBundle(dependBundleNames))
+            {
+                yield return null;
+            }
+
+            string bundlePath = Const.kPersistentABDir + bundleName;
+            AssetBundleCreateRequest bundleRequest = AssetBundle.LoadFromFileAsync(bundlePath);
+            yield return bundleRequest;
+            var bundle = bundleRequest.assetBundle;
+            if (bundle == null)
+            {
+                Debug.LogError(string.Format("LoadBundleAsync {0} AssetBundle faild", bundlePath));
+                yield break;
+            }
+            Debug.Log(string.Format("{0} 异步 加载成功", bundleName));
+
+            _bundleCache.Add(bundleName, bundle);
+
+            UnLockBundle(bundleName);
+
+        }
+
+    }
+
 
 
     private void OnDestroy()
