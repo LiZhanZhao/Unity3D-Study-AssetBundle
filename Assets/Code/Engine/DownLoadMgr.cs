@@ -48,6 +48,8 @@ public class DownLoadMgr : MonoBehaviour {
             "1001_scene.manifest",
             "ABs",
             "ABs.manifest",
+            "sky",
+            "sky.manifest"
         };
 
         for (int i = 0; i < srcUrlList.Length; i++)
@@ -83,8 +85,8 @@ public class DownLoadMgr : MonoBehaviour {
 
     void WriteFile(string path, byte[] content)
     {
+        Debug.Log("-------- " + path);
         string dirPath = System.IO.Path.GetDirectoryName(path);
-        Debug.Log("-------- " + dirPath);
         if (!System.IO.Directory.Exists(dirPath)) System.IO.Directory.CreateDirectory(dirPath);
         System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create);
         fs.Write(content, 0, content.Length);
@@ -105,6 +107,8 @@ public class DownLoadMgr : MonoBehaviour {
             {
                 LoadSceneMgr loadSceneMgr = GameObject.FindObjectOfType<LoadSceneMgr>();
                 loadSceneMgr.LoadScene("1001", "1001_Scene");
+
+                //UnityEngine.SceneManagement.SceneManager.LoadScene("empty");
             }
         }
 
