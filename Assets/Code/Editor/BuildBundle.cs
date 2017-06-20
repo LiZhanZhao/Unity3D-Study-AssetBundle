@@ -39,10 +39,10 @@ public class BuildBundle
         buildMap[0].assetNames = assetNames;
         buildMap[0].assetBundleName = "1001_Scene";
 
-        assetNames = new string[1];
-        assetNames[0] = "Assets/res/Scenes/1001_Test/SceneRoot.prefab";
-        buildMap[1].assetNames = assetNames;
-        buildMap[1].assetBundleName = "SceneRoot";
+        //assetNames = new string[1];
+        //assetNames[0] = "Assets/res/Scenes/1001_Test/SceneRoot.prefab";
+        //buildMap[1].assetNames = assetNames;
+        //buildMap[1].assetBundleName = "SceneRoot";
         
 
         string outputPath = Application.streamingAssetsPath + "/ABs";
@@ -55,10 +55,10 @@ public class BuildBundle
         BuildAssetBundleOptions op = BuildAssetBundleOptions.ChunkBasedCompression; // LZ4  
 
         //打Pc assetBundle
-        //BuildPipeline.BuildAssetBundles(outputPath, buildMap,op, BuildTarget.StandaloneWindows);
+        BuildPipeline.BuildAssetBundles(outputPath, buildMap,op, BuildTarget.StandaloneWindows);
 
         // 打android assetBundle
-        BuildPipeline.BuildAssetBundles(outputPath, buildMap, op, BuildTarget.Android);
+        //BuildPipeline.BuildAssetBundles(outputPath, buildMap, op, BuildTarget.Android);
         AssetDatabase.Refresh();
     }
 }
