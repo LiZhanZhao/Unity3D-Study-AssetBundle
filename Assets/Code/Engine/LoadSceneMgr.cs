@@ -168,6 +168,6 @@ public class LoadSceneMgr : MonoBehaviour {
     {
         Debug.Log("***** Scene " + level);
         // 在这里添加unload assetBundle是可以释放assetBundle
-        //UnLoadBundleCache();
+        UnLoadBundleCache();
     }
 }

@@ -8,34 +8,31 @@ public class DownLoadMgr : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
-        {
-            Const.kStreamABDir = "file://" + Application.streamingAssetsPath + "/ABs/";
-        }
+		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
+			Const.kStreamABDir = "file://" + Application.streamingAssetsPath + "/ABs/";
+		} else if (Application.platform == RuntimePlatform.Android) {
 
-        else if (Application.platform == RuntimePlatform.Android)
-        {
+			//Note that on some platforms it is not possible to directly access the StreamingAssets folder 
+			//because there is no file system access in the web platforms, 
+			//and because it is compressed into the .apk file on Android. 
+			//On those platforms, a url will be returned, which can be used using the WWW class.
 
-            //Note that on some platforms it is not possible to directly access the StreamingAssets folder 
-            //because there is no file system access in the web platforms, 
-            //and because it is compressed into the .apk file on Android. 
-            //On those platforms, a url will be returned, which can be used using the WWW class.
+			Const.kStreamABDir = "jar:file://" + Application.dataPath + "!/assets" + "/ABs/";
 
-            Const.kStreamABDir = "jar:file://" + Application.dataPath + "!/assets" + "/ABs/";
-        }
-
-
+		} else if (Application.platform == RuntimePlatform.IPhonePlayer) {
+			
+			Const.kStreamABDir = "file://" + Application.dataPath + "/Raw" + "/ABs/";
+		}
 
 
-        if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
-        {
-            Const.kPersistentABDir = Application.persistentDataPath + "/ABs/";
-        }
-        else if (Application.platform == RuntimePlatform.Android)
-        {
-            Const.kPersistentABDir = Application.persistentDataPath + "/ABs/";
-        }
 
+		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
+			Const.kPersistentABDir = Application.persistentDataPath + "/ABs/";
+		} else if (Application.platform == RuntimePlatform.Android) {
+			Const.kPersistentABDir = Application.persistentDataPath + "/ABs/";
+		} else if (Application.platform == RuntimePlatform.IPhonePlayer) {
+			Const.kPersistentABDir = Application.persistentDataPath + "/ABs/";
+		}
 
         ProcessDownload();
     }
@@ -44,12 +41,12 @@ public class DownLoadMgr : MonoBehaviour {
     {
         string[] srcUrlList = new string[]
         {
-            "1001_scene",
-            "1001_scene.manifest",
+            "1001.ab",
+            "1001.ab.manifest",
             "ABs",
             "ABs.manifest",
-            "sky",
-            "sky.manifest"
+            "sky.ab",
+            "sky.ab.manifest"
         };
 
         for (int i = 0; i < srcUrlList.Length; i++)
@@ -107,8 +104,8 @@ public class DownLoadMgr : MonoBehaviour {
             if (GUI.Button(new Rect(0, 0, 100, 100), "Next"))
             {
                 LoadSceneMgr loadSceneMgr = GameObject.FindObjectOfType<LoadSceneMgr>();
-                //loadSceneMgr.LoadScene("1001", "1001_Scene");
-                loadSceneMgr.LoadSceneAsync("1001", "1001_Scene");
+                loadSceneMgr.LoadScene("1001", "1001.ab");
+                //loadSceneMgr.LoadSceneAsync("1001", "1001.ab");
 
                 //UnityEngine.SceneManagement.SceneManager.LoadScene("empty");
             }

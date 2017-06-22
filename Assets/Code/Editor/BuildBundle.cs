@@ -32,17 +32,21 @@ public class BuildBundle
         buildMap[2].assetBundleName = "333";
         */
 
-        
+        // 在Ios上，assetBundleName和 assetNames 名字要一致，不然无法读取assetbundle
         // scene
         string[] assetNames = new string[1];
         assetNames[0] = "Assets/res/Scenes/1001/1001.unity";
         buildMap[0].assetNames = assetNames;
-        buildMap[0].assetBundleName = "1001_Scene";
+        buildMap[0].assetBundleName = "1001";
+		buildMap[0].assetBundleVariant = "ab";
+
 
         assetNames = new string[1];
         assetNames[0] = "Assets/res/Models/scene/1001/FBX/sky.FBX";
         buildMap[1].assetNames = assetNames;
         buildMap[1].assetBundleName = "sky";
+		buildMap[1].assetBundleVariant = "ab";
+
 
 
         string outputPath = Application.streamingAssetsPath + "/ABs";
@@ -52,13 +56,18 @@ public class BuildBundle
         }
         
 
-        BuildAssetBundleOptions op = BuildAssetBundleOptions.ChunkBasedCompression; // LZ4  
+		BuildAssetBundleOptions op = BuildAssetBundleOptions.ChunkBasedCompression; // LZ4  BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.ChunkBasedCompression;
+		//BuildAssetBundleOptions op = BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.ChunkBasedCompression;;
 
         //打Pc assetBundle
         BuildPipeline.BuildAssetBundles(outputPath, buildMap,op, BuildTarget.StandaloneWindows);
 
         // 打android assetBundle
         //BuildPipeline.BuildAssetBundles(outputPath, buildMap, op, BuildTarget.Android);
+
+		// 打iOS assetBundle
+		//BuildPipeline.BuildAssetBundles(outputPath, buildMap, op, BuildTarget.iOS);
+
         AssetDatabase.Refresh();
     }
 }
