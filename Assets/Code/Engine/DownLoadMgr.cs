@@ -41,14 +41,16 @@ public class DownLoadMgr : MonoBehaviour {
     {
         string[] srcUrlList = new string[]
         {
-            "1001.ab",
-            "1001.ab.manifest",
+            "1001",
+            "1001.manifest",
             "ABs",
             "ABs.manifest",
-            "sky.ab",
-            "sky.ab.manifest",
-            "311009.ab",
-            "311009.ab.manifest"
+            "sky",
+            "sky.manifest",
+            "311009",
+            "311009.manifest",
+            "shader",
+            "shader.manifest"
         };
 
         for (int i = 0; i < srcUrlList.Length; i++)

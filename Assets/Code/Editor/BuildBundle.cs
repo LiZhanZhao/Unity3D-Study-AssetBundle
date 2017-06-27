@@ -10,7 +10,7 @@ public class BuildBundle
     static void BuildABs()
     {
         // Create the array of bundle build details.  
-        AssetBundleBuild[] buildMap = new AssetBundleBuild[3];
+        AssetBundleBuild[] buildMap = new AssetBundleBuild[4];
 
         /*
         // prfab  
@@ -38,22 +38,36 @@ public class BuildBundle
         assetNames[0] = "Assets/res/Scenes/1001/1001.unity";
         buildMap[0].assetNames = assetNames;
         buildMap[0].assetBundleName = "1001";
-		buildMap[0].assetBundleVariant = "ab";
+		//buildMap[0].assetBundleVariant = "ab";
 
 
         assetNames = new string[1];
         assetNames[0] = "Assets/res/Models/scene/1001/FBX/sky.FBX";
         buildMap[1].assetNames = assetNames;
         buildMap[1].assetBundleName = "sky";
-		buildMap[1].assetBundleVariant = "ab";
+		//buildMap[1].assetBundleVariant = "ab";
 
         // 测试加载资源
         assetNames = new string[1];
         assetNames[0] = "Assets/res/Prefabs/char/311009/311009.prefab";
         buildMap[2].assetNames = assetNames;
         buildMap[2].assetBundleName = "311009";
-        buildMap[2].assetBundleVariant = "ab";
+        //buildMap[2].assetBundleVariant = "ab";
 
+        //assetNames = new string[6];
+        //assetNames[0] = "Assets/res/Shader/Unity/Legacy/Legacy-Diffuse.shader";
+        //assetNames[1] = "Assets/res/Shader/Unity/Legacy/Legacy-Transparent-Cutout-Diffuse.shader";
+        //assetNames[2] = "Assets/res/Shader/Unity/Legacy/Legacy-Transparent-Cutout-VertexLit.shader";
+        //assetNames[3] = "Assets/res/Shader/Unity/Legacy/Legacy-VertexLit.shader";
+        //assetNames[4] = "Assets/res/Shader/Unity/Mobile/Mobile-Diffuse.shader";
+        //assetNames[5] = "Assets/res/Shader/Unity/Unlit/Unlit-Texture.shader";
+
+        assetNames = new string[1];
+        assetNames[0] = "Assets/res/Shader/Unity/Unlit/Unlit-Texture.shader";
+
+        buildMap[3].assetNames = assetNames;
+        buildMap[3].assetBundleName = "shader";
+        //buildMap[3].assetBundleVariant = "ab";
 
         string outputPath = Application.streamingAssetsPath + "/ABs";
         if (!System.IO.Directory.Exists(outputPath))
@@ -62,14 +76,13 @@ public class BuildBundle
         }
         
 
-		BuildAssetBundleOptions op = BuildAssetBundleOptions.ChunkBasedCompression; // LZ4  BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.ChunkBasedCompression;
-		//BuildAssetBundleOptions op = BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.ChunkBasedCompression;;
-
+		//BuildAssetBundleOptions op = BuildAssetBundleOptions.ChunkBasedCompression; // LZ4  BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.ChunkBasedCompression;
+		BuildAssetBundleOptions op = BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.ChunkBasedCompression;;
         //打Pc assetBundle
-        BuildPipeline.BuildAssetBundles(outputPath, buildMap,op, BuildTarget.StandaloneWindows);
+        //BuildPipeline.BuildAssetBundles(outputPath, buildMap,op, BuildTarget.StandaloneWindows);
 
         // 打android assetBundle
-        //BuildPipeline.BuildAssetBundles(outputPath, buildMap, op, BuildTarget.Android);
+        BuildPipeline.BuildAssetBundles(outputPath, buildMap, op, BuildTarget.Android);
 
 		// 打iOS assetBundle
 		//BuildPipeline.BuildAssetBundles(outputPath, buildMap, op, BuildTarget.iOS);
