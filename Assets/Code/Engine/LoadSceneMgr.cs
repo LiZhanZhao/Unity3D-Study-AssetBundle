@@ -39,7 +39,7 @@ public class LoadSceneMgr : MonoBehaviour {
 
     
 
-    void LoadBundle(string bundleName)
+    public AssetBundle LoadBundle(string bundleName)
     {
         if (!_bundleCache.ContainsKey(bundleName))
         {
@@ -56,6 +56,7 @@ public class LoadSceneMgr : MonoBehaviour {
             Debug.Log(string.Format("{0} 同步 加载成功", bundleName));
             _bundleCache.Add(bundleName, bundle);
         }
+        return _bundleCache[bundleName];
     }
 
     public void LoadSceneAsync(string sceneName, string sceneBundleName)
@@ -155,7 +156,7 @@ public class LoadSceneMgr : MonoBehaviour {
         _rootBundle.Unload(true);
     }
 
-    void UnLoadBundleCache()
+    public void UnLoadBundleCache()
     {
         foreach(KeyValuePair<string, AssetBundle> item in _bundleCache)
         {

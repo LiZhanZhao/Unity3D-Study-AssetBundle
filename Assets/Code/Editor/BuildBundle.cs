@@ -47,6 +47,12 @@ public class BuildBundle
         buildMap[1].assetBundleName = "sky";
 		buildMap[1].assetBundleVariant = "ab";
 
+        // 测试加载资源
+        assetNames = new string[1];
+        assetNames[0] = "Assets/res/Prefabs/char/311009/311009.prefab";
+        buildMap[2].assetNames = assetNames;
+        buildMap[2].assetBundleName = "311009";
+        buildMap[2].assetBundleVariant = "ab";
 
 
         string outputPath = Application.streamingAssetsPath + "/ABs";

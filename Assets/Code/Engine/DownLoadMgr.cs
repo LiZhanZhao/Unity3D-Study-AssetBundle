@@ -46,7 +46,9 @@ public class DownLoadMgr : MonoBehaviour {
             "ABs",
             "ABs.manifest",
             "sky.ab",
-            "sky.ab.manifest"
+            "sky.ab.manifest",
+            "311009.ab",
+            "311009.ab.manifest"
         };
 
         for (int i = 0; i < srcUrlList.Length; i++)
