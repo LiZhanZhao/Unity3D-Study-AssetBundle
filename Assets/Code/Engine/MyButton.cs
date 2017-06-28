@@ -40,8 +40,8 @@ public class MyButton : MonoBehaviour {
         float preTime = Time.realtimeSinceStartup;
 
         LoadSceneMgr loadSceneMgr = GameObject.FindObjectOfType<LoadSceneMgr>();
-        AssetBundle ab = loadSceneMgr.LoadBundle("311009");
-        string prefabAssetPath = "Assets/res/Prefabs/char/311009/311009.prefab";
+        AssetBundle ab = loadSceneMgr.LoadBundle("306025");
+        string prefabAssetPath = "Assets/res/Prefabs/char/306025/306025.prefab";
         var prefab = ab.LoadAsset<Object>(prefabAssetPath);
         Instantiate(prefab);
 

@@ -47,10 +47,10 @@ public class DownLoadMgr : MonoBehaviour {
             "ABs.manifest",
             "sky",
             "sky.manifest",
-            "311009",
-            "311009.manifest",
-            "shader",
-            "shader.manifest"
+            "306025",
+            "306025.manifest",
+            "306025_FBX",
+            "306025_FBX.manifest"
         };
 
         for (int i = 0; i < srcUrlList.Length; i++)
@@ -108,7 +108,7 @@ public class DownLoadMgr : MonoBehaviour {
             if (GUI.Button(new Rect(0, 0, 100, 100), "Next"))
             {
                 LoadSceneMgr loadSceneMgr = GameObject.FindObjectOfType<LoadSceneMgr>();
-                loadSceneMgr.LoadScene("1001", "1001.ab");
+                loadSceneMgr.LoadScene("1001", "1001");
                 //loadSceneMgr.LoadSceneAsync("1001", "1001.ab");
 
                 //UnityEngine.SceneManagement.SceneManager.LoadScene("empty");
