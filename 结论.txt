@@ -1,0 +1,7 @@
+1. 在加载 资源的Bundle的时候，加载完之后，进行assetBundle.unload的话，内存的内存的Other/SerializeFile 会减少，如果不进行assetBundle.unload的话，内存的Other/SerializeFile 会增加。
+
+2. 在加载 场景的bundle的时候，在OnLevelWasLoaded时候进行unload，内存的Other/SerializeFile会减少
+
+3. 如果把场景的object变为prefab再进行加载的话，生成出来的object会丢失光照信息。
+
+4. 如果把FBX单独打包，并且FBX里面使用了Default-Diffuse, 这个材质使用了Standard, 那么在加载Prefab的时候，unity3D会去尝试解析Standard ,会导致加载卡顿。
