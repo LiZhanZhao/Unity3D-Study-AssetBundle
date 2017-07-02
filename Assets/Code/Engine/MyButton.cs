@@ -16,6 +16,11 @@ public class MyButton : MonoBehaviour {
         //    DoGC();
         //}
 
+        if (GUI.Button(new Rect(200, 0, 100, 100), "Empty"))
+        {
+            ToEmptyScene();
+        }
+
         if (GUI.Button(new Rect(0, 100, 100, 100), "Clear Bundle Cache "))
         {
             LoadSceneMgr loadSceneMgr = GameObject.FindObjectOfType<LoadSceneMgr>();
@@ -35,18 +40,25 @@ public class MyButton : MonoBehaviour {
         
     }
 
+    void ToEmptyScene()
+    {
+        // 清理MyObj.saveAsset
+        MyObj myObj = GameObject.FindObjectOfType<MyObj>();
+        GameObject.DestroyImmediate(myObj.saveAsset, true);
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("empty");
+    }
+
     void InstanceGo()
     {
-        float preTime = Time.realtimeSinceStartup;
-
         LoadSceneMgr loadSceneMgr = GameObject.FindObjectOfType<LoadSceneMgr>();
-        AssetBundle ab = loadSceneMgr.LoadBundle("306025");
-        string prefabAssetPath = "Assets/res/Prefabs/char/306025/306025.prefab";
+        AssetBundle ab = loadSceneMgr.LoadBundle("311009");
+        string prefabAssetPath = "Assets/res/Prefabs/char/311009/311009.prefab";
         var prefab = ab.LoadAsset<Object>(prefabAssetPath);
-        Instantiate(prefab);
+        GameObject go = Instantiate(prefab) as GameObject;
 
-        float dt = Time.realtimeSinceStartup - preTime;
-        Debug.Log(string.Format("<color=red> 加载时间为 {0} </color>", dt));
-
+        MyObj myObj = GameObject.FindObjectOfType<MyObj>();
+        myObj.saveGo = go;
+        myObj.saveAsset = prefab;
     }
 }

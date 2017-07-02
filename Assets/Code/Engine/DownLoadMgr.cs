@@ -47,10 +47,10 @@ public class DownLoadMgr : MonoBehaviour {
             "ABs.manifest",
             "sky",
             "sky.manifest",
-            "306025",
-            "306025.manifest",
-            "306025_FBX",
-            "306025_FBX.manifest"
+            "311009",
+            "311009.manifest",
+            //"306025_FBX",
+            //"306025_FBX.manifest"
         };
 
         for (int i = 0; i < srcUrlList.Length; i++)
