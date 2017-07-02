@@ -5,3 +5,8 @@
 3. 如果把场景的object变为prefab再进行加载的话，生成出来的object会丢失光照信息。
 
 4. 如果把FBX单独打包，并且FBX里面使用了Default-Diffuse, 这个材质使用了Standard, 那么在加载Prefab的时候，unity3D会去尝试解析Standard ,会导致加载卡顿。
+
+5. 任何资源Object，例如AssetBundle.Load出来的 Object,
+如果被DontDestroyOnLoad的gameObject引用了，
+那么在切换场景的时候，不会自动释放，
+如果没有任何引用，那么在切换场景的时候，就会自动化释放。
