@@ -10,7 +10,7 @@ public class BuildBundle
     static void BuildABs()
     {
         // Create the array of bundle build details.  
-        AssetBundleBuild[] buildMap = new AssetBundleBuild[4];
+        AssetBundleBuild[] buildMap = new AssetBundleBuild[6];
 
         /*
         // prfab  
@@ -50,17 +50,26 @@ public class BuildBundle
         
         // 测试加载资源
         assetNames = new string[1];
-        assetNames[0] = "Assets/res/Prefabs/char/311009/311009.prefab";
+        assetNames[0] = "Assets/res/Prefabs/char/306025/306025.prefab";
         buildMap[2].assetNames = assetNames;
-        buildMap[2].assetBundleName = "311009";
+        buildMap[2].assetBundleName = "306025";
         //buildMap[2].assetBundleVariant = "ab";
 
-        /*
         assetNames = new string[1];
         assetNames[0] = "Assets/res/Models/char/306025/306025.FBX";
         buildMap[3].assetNames = assetNames;
-        buildMap[3].assetBundleName = "306025_FBX";
-        */
+        buildMap[3].assetBundleName = "306025_001_FBX";
+
+        assetNames = new string[1];
+        assetNames[0] = "Assets/res/Models/char/306025/Materials/306025_001.mat";
+        buildMap[4].assetNames = assetNames;
+        buildMap[4].assetBundleName = "306025_001_mat";
+
+
+        assetNames = new string[1];
+        assetNames[0] = "Assets/res/Models/char/306025/Materials/306025_001.tga";
+        buildMap[5].assetNames = assetNames;
+        buildMap[5].assetBundleName = "306025_001_tga";
 
         //assetNames = new string[6];
         //assetNames[0] = "Assets/res/Shader/Unity/Legacy/Legacy-Diffuse.shader";

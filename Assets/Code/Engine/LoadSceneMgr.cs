@@ -44,6 +44,14 @@ public class LoadSceneMgr : MonoBehaviour {
         if (!_bundleCache.ContainsKey(bundleName))
         {
             string[] dependBundleNames = _manifest.GetAllDependencies(bundleName);
+
+            Debug.Log(string.Format("*********************** {0} : {1}", bundleName, dependBundleNames.Length));
+            for (int i = 0; i < dependBundleNames.Length; i++)
+            {
+                string dependBundleName = dependBundleNames[i];
+                Debug.Log(string.Format("dependBundleName : {1}", i, dependBundleName));
+            }
+
             for (int i = 0; i < dependBundleNames.Length; i++)
             {
                 string dependBundleName = dependBundleNames[i];

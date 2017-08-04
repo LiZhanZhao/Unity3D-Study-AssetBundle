@@ -52,13 +52,13 @@ public class MyButton : MonoBehaviour {
     void InstanceGo()
     {
         LoadSceneMgr loadSceneMgr = GameObject.FindObjectOfType<LoadSceneMgr>();
-        AssetBundle ab = loadSceneMgr.LoadBundle("311009");
-        string prefabAssetPath = "Assets/res/Prefabs/char/311009/311009.prefab";
+        AssetBundle ab = loadSceneMgr.LoadBundle("306025");
+        string prefabAssetPath = "Assets/res/Prefabs/char/306025/306025.prefab";
         var prefab = ab.LoadAsset<Object>(prefabAssetPath);
         GameObject go = Instantiate(prefab) as GameObject;
 
-        MyObj myObj = GameObject.FindObjectOfType<MyObj>();
-        myObj.saveGo = go;
-        myObj.saveAsset = prefab;
+        //MyObj myObj = GameObject.FindObjectOfType<MyObj>();
+        //myObj.saveGo = go;
+        //myObj.saveAsset = prefab;
     }
 }
