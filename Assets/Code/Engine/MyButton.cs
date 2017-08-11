@@ -29,7 +29,8 @@ public class MyButton : MonoBehaviour {
 
         if (GUI.Button(new Rect(0, 200, 100, 100), "Instance Go"))
         {
-            InstanceGo();
+            //InstanceGo();
+            InstanceSpineGo();
         }
     }
 
@@ -60,5 +61,111 @@ public class MyButton : MonoBehaviour {
         //MyObj myObj = GameObject.FindObjectOfType<MyObj>();
         //myObj.saveGo = go;
         //myObj.saveAsset = prefab;
+    }
+
+    void InstanceSpineGo()
+    {
+        UnityEngine.Profiling.Profiler.BeginSample("MyPieceOfCode 111");
+        Debug.Log("111111111");
+        UnityEngine.Profiling.Profiler.EndSample();
+
+        LoadSceneMgr loadSceneMgr = GameObject.FindObjectOfType<LoadSceneMgr>();
+
+        Canvas canvas = GameObject.FindObjectOfType<Canvas>();
+        AssetBundle ab = null;
+        float preTime = 0.0f;
+        string prefabAssetPath = "";
+        Object prefab = null;
+        GameObject go;
+        List<GameObject> goList = new List<GameObject>();
+
+        preTime = Time.realtimeSinceStartup;
+        ab = loadSceneMgr.LoadBundle("binary_SkeletonGraphic");
+        prefabAssetPath = "Assets/res/Prefabs/binary_SkeletonGraphic.prefab";
+        prefab = ab.LoadAsset<Object>(prefabAssetPath);
+        Debug.Log(string.Format(" {0} Load Bundle Time : {1} ", "binary_SkeletonGraphic",
+            Time.realtimeSinceStartup - preTime));
+
+
+        preTime = Time.realtimeSinceStartup;
+        go = Instantiate(prefab) as GameObject;
+
+        Debug.Log(string.Format(" {0} Instantiate Time : {1} ", "binary_SkeletonGraphic",
+            Time.realtimeSinceStartup - preTime));
+
+        go.transform.SetParent(canvas.transform, false);
+
+
+        UnityEngine.Profiling.Profiler.BeginSample("MyPieceOfCode 222");
+        Debug.Log("222222");
+        UnityEngine.Profiling.Profiler.EndSample();
+
+        /*
+        LoadSceneMgr loadSceneMgr = GameObject.FindObjectOfType<LoadSceneMgr>();
+        
+        Canvas canvas = GameObject.FindObjectOfType<Canvas>();
+        AssetBundle ab = null;
+        float preTime = 0.0f;
+        string prefabAssetPath = "";
+        Object prefab = null;
+        GameObject go;
+        List<GameObject> goList = new List<GameObject>();
+
+
+        preTime = Time.realtimeSinceStartup;
+        ab = loadSceneMgr.LoadBundle("binary_SkeletonGraphic");
+        prefabAssetPath = "Assets/res/Prefabs/binary_SkeletonGraphic.prefab";
+        prefab = ab.LoadAsset<Object>(prefabAssetPath);
+        Debug.Log(string.Format(" {0} Load Bundle Time : {1} ", "binary_SkeletonGraphic",
+            Time.realtimeSinceStartup - preTime));
+
+
+        preTime = Time.realtimeSinceStartup;
+        go = Instantiate(prefab) as GameObject;
+
+        //for (int i = 0; i < 100; i++)
+        //{
+        //    goList.Add(Instantiate(prefab) as GameObject);
+        //}
+
+        Debug.Log(string.Format(" {0} Instantiate Time : {1} ", "binary_SkeletonGraphic", 
+            Time.realtimeSinceStartup - preTime));
+
+
+        go.transform.SetParent(canvas.transform, false);
+
+        //for (int i = 0; i < 100; i++)
+        //{
+        //    goList[i].transform.SetParent(canvas.transform, false);
+        //}
+
+
+
+
+        preTime = Time.realtimeSinceStartup;
+        ab = loadSceneMgr.LoadBundle("json_SkeletonGraphic");
+        prefabAssetPath = "Assets/res/Prefabs/json_SkeletonGraphic.prefab";
+        prefab = ab.LoadAsset<Object>(prefabAssetPath);
+        Debug.Log(string.Format(" {0} Load Bundle Time : {1} ", "json_SkeletonGraphic",
+            Time.realtimeSinceStartup - preTime));
+
+
+        preTime = Time.realtimeSinceStartup;
+        go = Instantiate(prefab) as GameObject;
+        //goList = new List<GameObject>();
+        //for (int i = 0; i < 100; i++)
+        //{
+        //    goList.Add(Instantiate(prefab) as GameObject);
+        //}
+        Debug.Log(string.Format(" {0} Instantiate Time : {1} ", "json_SkeletonGraphic",
+            Time.realtimeSinceStartup - preTime));
+
+        go.transform.SetParent(canvas.transform, false);
+        //for (int i = 0; i < 100; i++)
+        //{
+        //    goList[i].transform.SetParent(canvas.transform, false);
+        //}
+
+        */
     }
 }

@@ -10,7 +10,7 @@ public class BuildBundle
     static void BuildABs()
     {
         // Create the array of bundle build details.  
-        AssetBundleBuild[] buildMap = new AssetBundleBuild[6];
+        AssetBundleBuild[] buildMap = new AssetBundleBuild[2];
 
         /*
         // prfab  
@@ -32,6 +32,7 @@ public class BuildBundle
         buildMap[2].assetBundleName = "333";
         */
 
+        /*
         // 在Ios上，assetBundleName和 assetNames 名字要一致，不然无法读取assetbundle
         // scene
         string[] assetNames = new string[1];
@@ -45,9 +46,10 @@ public class BuildBundle
         assetNames[0] = "Assets/res/Models/scene/1001/FBX/sky.FBX";
         buildMap[1].assetNames = assetNames;
         buildMap[1].assetBundleName = "sky";
-		//buildMap[1].assetBundleVariant = "ab";
+        //buildMap[1].assetBundleVariant = "ab";
+        */
 
-        
+        /*
         // 测试加载资源
         assetNames = new string[1];
         assetNames[0] = "Assets/res/Prefabs/char/306025/306025.prefab";
@@ -70,6 +72,20 @@ public class BuildBundle
         assetNames[0] = "Assets/res/Models/char/306025/Materials/306025_001.tga";
         buildMap[5].assetNames = assetNames;
         buildMap[5].assetBundleName = "306025_001_tga";
+        */
+
+        string[] assetNames = new string[1];
+        assetNames = new string[1];
+        assetNames[0] = "Assets/res/Prefabs/binary_SkeletonGraphic.prefab";
+        buildMap[0].assetNames = assetNames;
+        buildMap[0].assetBundleName = "binary_SkeletonGraphic";
+
+        assetNames = new string[1];
+        assetNames[0] = "Assets/res/Prefabs/json_SkeletonGraphic.prefab";
+        buildMap[1].assetNames = assetNames;
+        buildMap[1].assetBundleName = "json_SkeletonGraphic";
+
+
 
         //assetNames = new string[6];
         //assetNames[0] = "Assets/res/Shader/Unity/Legacy/Legacy-Diffuse.shader";

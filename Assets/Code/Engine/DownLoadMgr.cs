@@ -41,10 +41,13 @@ public class DownLoadMgr : MonoBehaviour {
     {
         string[] srcUrlList = new string[]
         {
-            "1001",
-            "1001.manifest",
+            
             "ABs",
             "ABs.manifest",
+            
+            /*
+            "1001",
+            "1001.manifest",
             "sky",
             "sky.manifest",
             "306025",
@@ -55,6 +58,12 @@ public class DownLoadMgr : MonoBehaviour {
             "306025_001_mat.manifest",
             "306025_001_tga",
             "306025_001_tga.manifest"
+            */
+
+            "binary_skeletongraphic",
+            "binary_skeletongraphic.manifest",
+            "json_skeletongraphic",
+            "json_skeletongraphic.manifest"
 
         };
 

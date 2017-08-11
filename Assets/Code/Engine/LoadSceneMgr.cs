@@ -45,11 +45,11 @@ public class LoadSceneMgr : MonoBehaviour {
         {
             string[] dependBundleNames = _manifest.GetAllDependencies(bundleName);
 
-            Debug.Log(string.Format("*********************** {0} : {1}", bundleName, dependBundleNames.Length));
+            //Debug.Log(string.Format("*********************** {0} : {1}", bundleName, dependBundleNames.Length));
             for (int i = 0; i < dependBundleNames.Length; i++)
             {
                 string dependBundleName = dependBundleNames[i];
-                Debug.Log(string.Format("dependBundleName : {1}", i, dependBundleName));
+                //Debug.Log(string.Format("dependBundleName : {1}", i, dependBundleName));
             }
 
             for (int i = 0; i < dependBundleNames.Length; i++)
